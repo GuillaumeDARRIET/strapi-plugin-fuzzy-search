@@ -46,15 +46,17 @@ export interface PaginationMeta {
 
 export interface RESTPaginationMeta {
   pagination: {
-    page: number;
-    pageSize: number;
+    page?: number;
+    pageSize?: number;
     pageCount?: number;
     total?: number;
+    start?: number;
+    limit?: number;
   };
 }
 
 export interface PaginatedModelResponse<Meta = PaginationMeta> {
-  meta: Meta;
+  meta?: Meta;
   data: unknown[];
 }
 

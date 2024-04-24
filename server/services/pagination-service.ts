@@ -11,12 +11,15 @@ const parsePaginationArgs = ({
   page: pageQuery = '1',
   pageSize: pageSizeQuery = '25',
   withCount: withCountQuery = 'true',
-}: PaginationBaseQuery) => {
+  start: pageStartQuery = '0',
+  limit: pageLimitQuery = '-1',
+}) => {
   const page = parseInt(pageQuery, 10);
   const pageSize = parseInt(pageSizeQuery, 10);
+  const start = parseInt(pageStartQuery, 10);
+  const limit = parseInt(pageLimitQuery, 10);
   const withCount = withCountQuery === 'true';
-
-  return { page, pageSize, withCount };
+  return { page, pageSize, withCount, start, limit };
 };
 
 export const paginateRestResults = async (
@@ -28,33 +31,29 @@ export const paginateRestResults = async (
   const paginatedResult: PaginatedResultsResponse<RESTPaginationMeta> = {};
 
   const buildPaginatedResults = (pluralName: string) => {
-    const { page, pageSize, withCount } = parsePaginationArgs(
-      pagination[pluralName],
-    );
+    const { page, pageSize, withCount, start, limit } = parsePaginationArgs(pagination[pluralName]);
 
-    paginatedResult[pluralName] = {
-      data: [],
-      meta: { pagination: { page: 1, pageSize: 25 } },
-    };
-    const startIndex = pageSize * (page - 1);
-    const endIndex = startIndex + pageSize;
+    paginatedResult[pluralName] = { data: [] };
+  
+    const startIndex = start >= 0 && limit > 0 ? start : pageSize * (page - 1);
+    const endIndex = start >= 0 && limit > 0 ? start + limit : startIndex + pageSize;
 
-    paginatedResult[pluralName].data = currentResult[pluralName].slice(
-      startIndex,
-      endIndex,
-    );
+    paginatedResult[pluralName].data = currentResult[pluralName].slice(startIndex,endIndex);
+    const meta: RESTPaginationMeta = { pagination: {} };
 
-    const meta: RESTPaginationMeta = {
-      pagination: {
-        page,
-        pageSize,
-      },
-    };
+    if (start >= 0 && limit > 0) {
+      meta.pagination.start = start;
+      meta.pagination.limit = limit;
+    } else {
+      meta.pagination.page = page;
+      meta.pagination.pageSize = pageSize;
+    }
 
     if (withCount) {
-      const total = resultsResponse[pluralName].length;
-      meta.pagination.total = total;
-      meta.pagination.pageCount = Math.ceil(total / pageSize);
+      meta.pagination.total = resultsResponse[pluralName].length;
+      if (meta.pagination.pageSize) {
+        meta.pagination.pageCount = Math.ceil(meta.pagination.total / pageSize);
+      }
     }
 
     paginatedResult[pluralName].meta = meta;
