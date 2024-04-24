@@ -1,0 +1,93 @@
+{
+    "name": "strapi-plugin-fuzzy-search",
+    "version": "0.0.0-development",
+    "description": "Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add your content types to in no time.",
+    "strapi": {
+        "displayName": "Fuzzy Search",
+        "name": "fuzzy-search",
+        "description": "Register a weighted fuzzy search endpoint for Strapi Headless CMS you can add your content types to in no time.",
+        "kind": "plugin"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/",
+        "tag": "latest"
+    },
+    "release": {
+        "branches": [
+            "main",
+            {
+                "name": "beta",
+                "prerelease": true
+            }
+        ]
+    },
+    "dependencies": {
+        "fuzzysort": "2.0.4",
+        "transliteration": "2.3.5"
+    },
+    "peerDependencies": {
+        "@strapi/strapi": "^4.11.4",
+        "@strapi/utils": "^4.11.4",
+        "yup": "^0.32.9"
+    },
+    "author": "@DomDew (https://github.com/DomDew)",
+    "maintainers": [
+        "@DomDew (https://github.com/DomDew)",
+        "@wfproductions (https://github.com/wfproductions)"
+    ],
+    "engines": {
+        "node": ">=18.x.x <=20.x.x",
+        "npm": ">=6.0.0"
+    },
+    "license": "MIT",
+    "main": "strapi-server.js",
+    "types": "dist/index.d.ts",
+    "devDependencies": {
+        "@strapi/strapi": "^4.23.1",
+        "@strapi/utils": "^4.23.1",
+        "@typescript-eslint/eslint-plugin": "^6.9.1",
+        "@typescript-eslint/parser": "^6.9.1",
+        "@vitest/coverage-v8": "^0.34.6",
+        "all-contributors-cli": "^6.20.0",
+        "eslint": "^8.52.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-airbnb-typescript": "^17.1.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-config-standard-with-typescript": "^42.0.0",
+        "eslint-plugin-import": "^2.29.0",
+        "eslint-plugin-n": "^16.2.0",
+        "eslint-plugin-prettier": "^5.0.1",
+        "eslint-plugin-promise": "^6.1.1",
+        "prettier": "^3.0.3",
+        "semantic-release": "^23.0.2",
+        "typescript": "^5.2.2",
+        "vitest": "^0.34.6",
+        "yup": "^1.4.0"
+    },
+    "scripts": {
+        "semantic-release": "semantic-release",
+        "develop": "tsc -w",
+        "build": "tsc",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "test:coverage:json": "vitest run --coverage.enabled --coverage.reporter=json-summary",
+        "lint": "eslint . --ext .ts",
+        "prettier:check": "prettier --check ./server ./tests",
+        "prettier:write": "prettier --write ./server ./tests"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DomDew/strapi-plugin-fuzzy-search.git"
+    },
+    "keywords": [
+        "strapi",
+        "fuzzysort",
+        "fuzzysearch",
+        "search"
+    ],
+    "bugs": {
+        "url": "https://github.com/DomDew/strapi-plugin-fuzzy-search/issues"
+    },
+    "homepage": "https://github.com/DomDew/strapi-plugin-fuzzy-search#readme"
+}
