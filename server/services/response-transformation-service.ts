@@ -55,6 +55,7 @@ export const buildRestResponse = async (
 
   for (const res of searchResults) {
     const sanitizeEntry = async (fuzzyRes: Fuzzysort.KeysResult<Entry>) => {
+      fuzzyRes.obj.__score = fuzzyRes.score;
       return await sanitizeOutput(fuzzyRes.obj, res.schema, auth);
     };
 

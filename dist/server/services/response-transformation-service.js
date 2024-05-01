@@ -22,6 +22,7 @@ const buildRestResponse = async (searchResults, auth, pagination, queriedContent
     const resultsResponse = {};
     for (const res of searchResults) {
         const sanitizeEntry = async (fuzzyRes) => {
+            fuzzyRes.obj.__score = fuzzyRes.score;
             return await sanitizeOutput(fuzzyRes.obj, res.schema, auth);
         };
         const buildSanitizedEntries = async () => res.fuzzysortResults.map(async (fuzzyRes) => await sanitizeEntry(fuzzyRes));
